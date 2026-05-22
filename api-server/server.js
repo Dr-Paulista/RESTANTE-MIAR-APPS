@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import OpenAI from 'openai';
+import Groq from 'groq-sdk';
 
 const app = express();
 const port = process.env.PORT || 3001;
-const openaiKey = process.env.OPENAI_API_KEY;
-const client = openaiKey ? new OpenAI({ apiKey: openaiKey }) : null;
+const groqApiKey = process.env.GROQ_API_KEY;
+const client = groqApiKey ? new Groq({ apiKey: groqApiKey }) : null;
 
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
@@ -25,13 +25,13 @@ app.post('/api/chat', async (req, res) => {
   if (!client) {
     return res.json({
       reply:
-        'Recebi sua mensagem. Estou em modo base porque a chave OPENAI_API_KEY ainda não foi configurada no servidor.',
+        'Recebi sua mensagem. Estou em modo base porque a chave GROQ_API_KEY ainda não foi configurada no servidor.',
     });
   }
 
   try {
     const completion = await client.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: process.env.GROQ_MODEL || 'mixtral-8x7b-32768',
       messages: [
         {
           role: 'system',

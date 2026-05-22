@@ -16,7 +16,7 @@ type Message = {
   text: string;
 };
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.EXPO_PUBLIC_API_URL?.trim();
 
 export default function HomeScreen() {
   const [started, setStarted] = useState(false);
@@ -39,6 +39,18 @@ export default function HomeScreen() {
     setMessages((current) => [...current, { role: 'user', text }]);
     setLoading(true);
 
+    if (!API_URL) {
+      setMessages((current) => [
+        ...current,
+        {
+          role: 'assistant',
+          text: 'Recebi sua mensagem. Estou funcionando em modo base, sem depender de localhost. Para IA real, configure EXPO_PUBLIC_API_URL com a URL pública da API.',
+        },
+      ]);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
@@ -56,7 +68,7 @@ export default function HomeScreen() {
         ...current,
         {
           role: 'assistant',
-          text: 'Backend não respondeu. O app abriu, mas falta ligar o servidor ou configurar a URL da API.',
+          text: 'A API não respondeu. O app continua aberto em modo base. Verifique se EXPO_PUBLIC_API_URL aponta para a porta pública 3001.',
         },
       ]);
     } finally {

@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "MIAR APPS",
+    "slug": "miar-apps",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "miarapps",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.miarapps.app"
+    },
+    "android": {
+      "package": "com.miarapps.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#020617"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
